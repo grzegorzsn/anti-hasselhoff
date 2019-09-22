@@ -26,3 +26,5 @@ Steps to do next:
 * Make installation independent from downloading repo
 * Split install.yml into two playbooks: one for dependencies, one for proper installation
 * Implement password handling for disabling the tool
+* Automatically fix background after logging in
+* Save pictures in one of common directories, do not overwrite older intruder picture
