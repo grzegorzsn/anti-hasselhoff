@@ -1,0 +1,17 @@
+- name: anti-hasselhoff
+  hosts: 127.0.0.1
+  connection: local
+  tasks:
+
+  - name: Install fswebcam
+    apt: name="{{packages}}" state=present
+    vars:
+      packages:
+      - fswebcam
+    become: true
+
+    - name: Install logkeys
+      apt:
+        deb: dependencies/logkeys_0.1.1c-1_amd64.deb
+      become: true
+
