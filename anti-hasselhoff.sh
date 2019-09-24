@@ -47,6 +47,7 @@ while [ 1 ] ; do
     xdg-screensaver lock
     sudo logkeys --kill
     fswebcam -r 1024x768 --jpeg 95 -D 1 intruder.jpg
+    cp intruder.jpg ~/Pictures/intruder_'`date +%Y-%m-%d_%H-%M-%S`'.jpg
     gsettings set org.gnome.desktop.screensaver picture-uri "file://$PWD/intruder.jpg"
     for (( i = 0; i < $TIMEOUT; i++ )); do
         xdotool key Ctrl
