@@ -9,6 +9,7 @@
       packages:
       - fswebcam
       - xdotool
+      - evtest
     become: true
 
   - name: Install logkeys
