@@ -48,9 +48,9 @@ while [ 1 ] ; do
     sudo logkeys --kill
     fswebcam -r 1024x768 --jpeg 95 -D 1 intruder.jpg
     gsettings set org.gnome.desktop.screensaver picture-uri "file://$PWD/intruder.jpg"
-    sleep 1
     for (( i = 0; i < $TIMEOUT; i++ )); do
-        xdotool sleep 1 key Ctrl
+        xdotool key Ctrl
+        sleep 1
     done
     sudo rm $KEYLOG
     sudo kill $(jobs -p)
