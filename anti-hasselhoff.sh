@@ -27,7 +27,7 @@ while [ $countdown -gt 0 ] ; do
 done
 
 echo "FIRE!"
-sudo logkeys --start --output $KEYLOG
+sudo logkeys --start --output $KEYLOG --device /dev/input/event16
 sudo chmod a+r $KEYLOG
 
 while [ 1 ] ; do
@@ -35,10 +35,9 @@ while [ 1 ] ; do
   then
     echo "INTRUSION"
     xdg-screensaver lock
-
     sudo logkeys --kill
     fswebcam -r 1024x768 --jpeg 95 -D 1 intruder.jpg
-    sudo gsettings set org.gnome.desktop.screensaver picture-uri "file://$PWD/intruder.jpg"
+    gsettings set org.gnome.desktop.screensaver picture-uri "file://$PWD/intruder.jpg"
     sleep 1
     for (( i = 0; i < $TIMEOUT; i++ )); do
         xdotool sleep 1 key Ctrl
