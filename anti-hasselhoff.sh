@@ -1,11 +1,12 @@
 #!/bin/bash
 
-sudo echo
 
 DEFAULT_PASSWORD="asdf"
 DEFAULT_COUNTDOWN=5
 KEYLOG=.anti-hasselhoff.log
 TIMEOUT=5
+
+sudo rm $KEYLOG || true
 
 password=$1
 countdown=$2
@@ -27,11 +28,20 @@ while [ $countdown -gt 0 ] ; do
 done
 
 echo "FIRE!"
-sudo logkeys --start --output $KEYLOG --device /dev/input/event16
+
+events=`ls -l /dev/input/by-path/ | grep kbd | grep -o -e "event[0-9][0-9]*"`
+for event in $events ; do
+ sudo evtest /dev/input/$event >> $KEYLOG &
+done
 sudo chmod a+r $KEYLOG
+sleep 0.1
+
+starting_log_len=`wc -l $KEYLOG | cut -d " " -f 1`
 
 while [ 1 ] ; do
-  if [ $(cat $KEYLOG | wc --bytes) -gt 48 ]  # dirty hack to indicate some button was pressed
+  sleep 1
+  current_log_len=`wc -l $KEYLOG | cut -d " " -f 1`
+  if [ $starting_log_len != $current_log_len ]  # dirty hack to indicate some button was pressed
   then
     echo "INTRUSION"
     xdg-screensaver lock
@@ -43,6 +53,7 @@ while [ 1 ] ; do
         xdotool sleep 1 key Ctrl
     done
     sudo rm $KEYLOG
+    sudo kill $(jobs -p)
     exit 1
   fi
 done
