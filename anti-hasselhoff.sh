@@ -29,18 +29,19 @@ done
 
 echo "FIRE!"
 
-events=`ls -l /dev/input/by-path/ | grep kbd | grep -o -e "event[0-9][0-9]*"`
+events=`ls -l /dev/input/by-path/ | grep "mouse\|kbd" | grep -o -e "event[0-9][0-9]*"`
 for event in $events ; do
  sudo evtest /dev/input/$event >> $KEYLOG &
 done
+
 sudo chmod a+r $KEYLOG
 sleep 0.1
 
-starting_log_len=`wc -l $KEYLOG | cut -d " " -f 1`
+starting_log_len=`cat $KEYLOG | grep "BTN_LEFT\|KEY_" | wc -l  | cut -d " " -f 1`
 
 while [ 1 ] ; do
   sleep 1
-  current_log_len=`wc -l $KEYLOG | cut -d " " -f 1`
+  current_log_len=`cat $KEYLOG | grep "BTN_LEFT\|KEY_" | wc -l  | cut -d " " -f 1`
   if [ $starting_log_len != $current_log_len ]  # dirty hack to indicate some button was pressed
   then
     echo "INTRUSION"
